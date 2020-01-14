@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerMovementScript : MonoBehaviour
 {
     Rigidbody m_Rigidbody;
-    public float m_Speed = 25f;
+    private float m_Speed = 100f;
     
     private Vector3 moveDirection;
 
@@ -20,14 +20,15 @@ public class PlayerMovementScript : MonoBehaviour
     Vector3 relativePosition;
     Quaternion targetRotation;
 
-    private float lerpTime = 20f; // was 15f;
+    private float lerpTime = 15f; // was 15f; higher - faster
+    private float rotation_speed = 1.5f;
     private float currentLerpTime = 0;
 
     private float nextActionTime, period, _timer, fuel_used = 0.6f;
 
     private Vignette vignette;
     public Camera camera;
-    public float perspective_max = 60f, perspective_min = 20f;
+    public float perspective_max = 100f, perspective_min = 30f;
 
     public Text gameOver, quotes;
 
@@ -37,7 +38,7 @@ public class PlayerMovementScript : MonoBehaviour
         camera.fieldOfView = perspective_min + x;
         x = fuel / 100f;
         x = 1 - x;
-        vignette.intensity.value = 0.2f + x;
+        vignette.intensity.value = x;
     }
 
     public void update_fuel(float x = 10f){
@@ -78,8 +79,6 @@ public class PlayerMovementScript : MonoBehaviour
         nextActionTime = 0f;
         period = 0.1f;
         _timer = 0f;
-        perspective_max = 65f;
-        perspective_min = 30f;
     }
 
     void Update(){
@@ -109,11 +108,11 @@ public class PlayerMovementScript : MonoBehaviour
    
         m_Rigidbody.MovePosition(GetComponent<Rigidbody>().position + transform.TransformDirection(moveDirection) * m_Speed * Time.deltaTime);
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey("d")){
-            transform.Rotate(new Vector3(0, 5, 0) * Time.deltaTime * m_Speed);
+            transform.Rotate(new Vector3(0, rotation_speed, 0) * Time.deltaTime * m_Speed);
             model.rotation = Quaternion.Lerp(model.rotation, to_model_right.rotation, lerpTime * Time.deltaTime);
         }
         else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a")){
-            transform.Rotate(new Vector3(0, -5, 0) * Time.deltaTime * m_Speed);
+            transform.Rotate(new Vector3(0, -rotation_speed, 0) * Time.deltaTime * m_Speed);
             model.rotation = Quaternion.Lerp(model.rotation, to_model_left.rotation, lerpTime * Time.deltaTime);
         }
         else{

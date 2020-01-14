@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class oil_ColliderAndroid : MonoBehaviour
+public class oil_ColliderAndroid : collidableObject, IPooledObject
 {
-
     public PlayerMovementScriptAndroid player_manager;
     //private GameObject ExplosionEffect;
     private Transform tr;
-
-    ObjectPooler objectPooler;
-
+    string after_collision_effect;
+    
+    // public ObjectPooler objectPooler;
     void Start()
     {
-        objectPooler = ObjectPooler.Instance;
-
+        Start_child();
+        after_collision_effect = "boom_oil";
+        //objectPooler = ObjectPooler.Instance;
         GameObject tempObj = GameObject.Find("Player");
         if ( !player_manager )
             player_manager = tempObj.GetComponent<PlayerMovementScriptAndroid>();
         //ExplosionEffect = GameObject.Find("boom_oil");
+    }
+
+    public void OnObjectSpawn(){   
         tr = GetComponent<Transform>();
 
         tr.Rotate(-90, 0, 0);
@@ -36,9 +39,8 @@ public class oil_ColliderAndroid : MonoBehaviour
         {
             player_manager.update_fuel();
             Debug.Log("+ 25 oil");
-            objectPooler.SpawnFromPool("boom_oil", tr.position);
-
-            gameObject.SetActive(false);
+            // objectPooler.SpawnFromPool(after_collision_effect, tr.position);
+            startCollisionProcess(tr.position, after_collision_effect);
         }
     }
 

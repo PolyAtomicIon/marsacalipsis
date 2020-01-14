@@ -19,7 +19,7 @@ public class FallDownManager : MonoBehaviour
         objectPooler = ObjectPooler.Instance;
 
         nextActionTime = 0f;
-        period = 1f;
+        period = 0.6f;
         _timer = 0f;
 
         StartCoroutine(FallingDown());
@@ -28,10 +28,10 @@ public class FallDownManager : MonoBehaviour
     private IEnumerator FallingDown()
     {        
         while (true){
-            Debug.Log("pnact"); 
+            Debug.Log("dh"); 
             yield return new WaitForSeconds(period);
 
-            if (period > 0.5f)
+            if (period > 0.3f)
                 period -= 0.1f;
 
             Vector3 spawnPosition = Random.onUnitSphere * (planetRadius + characterHeight * 0.5f) + planetPosition;

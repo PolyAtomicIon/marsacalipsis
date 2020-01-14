@@ -21,16 +21,9 @@ public class FallDownManager2 : MonoBehaviour
     {
         objectPooler = ObjectPooler.Instance;
 
-        const int size = 8;
+        const int size = 1;
         look_at_group = new string[size]{
-                                                    "FallFromHere", 
-                                                    "FallFromHere", 
-                                                    "FallFromHere", 
-                                                    "FallFromHere", 
-                                                    "FallFromHere (1)",
-                                                    "FallFromHere (1)",
-                                                    "FallFromHere (2)",
-                                                    "FallFromHere (2)",
+                                                    "FallFromHere",
                                                     };
         nextActionTime = 0f;
         period = 1.2f;

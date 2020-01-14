@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
@@ -11,6 +12,10 @@ public class ObjectPooler : MonoBehaviour
         public GameObject prefab;
         public int size;
         public float characterHeight;
+    }
+
+    enum Constant_values{
+        min_number_oils = 5
     }
 
     #region Singleton
@@ -50,7 +55,9 @@ public class ObjectPooler : MonoBehaviour
 
     }
 
-    public GameObject SpawnFromPool (string tag, Vector3 position){
+    public GameObject SpawnFromPool (string tag, Vector3 position, bool is_destroy = false){
+        
+        Debug.Log(tag + " what is it ?");
 
         GameObject objectToSpawn = poolDictionary[tag].Dequeue();
 
@@ -59,15 +66,19 @@ public class ObjectPooler : MonoBehaviour
         objectToSpawn.transform.position = position;              
         objectToSpawn.transform.rotation = Quaternion.identity; 
         if( tag == "oil" || tag == "meteorite1" )  
-            objectToSpawn.transform.LookAt(planetPosition);
+            objectToSpawn.transform.LookAt(planetPosition); 
 
         IPooledObject pooledObj = objectToSpawn.GetComponent<IPooledObject>();
-
-        if( pooledObj != null ){
+        
+        try {
+            Debug.Log(tag + " polymorphism ??? Whooaaaaaahaha");
             pooledObj.OnObjectSpawn();
-        }
-
-        poolDictionary[tag].Enqueue(objectToSpawn);
+        } catch (NullReferenceException e) {
+            Debug.Log("Exception caught: object is null");
+        } 
+        
+        if (!is_destroy || poolDictionary[tag].Count <= (int) Constant_values.min_number_oils)
+            poolDictionary[tag].Enqueue(objectToSpawn);
 
         return objectToSpawn;
 
