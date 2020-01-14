@@ -198,26 +198,17 @@ public class PlayerMovementScriptAndroid : MonoBehaviour
 
         int i = 0;
 		//loop over every touch found
-        // git
 		while (i < Input.touchCount) {
             lerpTime = 30f;
 
 			if (Input.GetTouch (i).position.x > ScreenWidth / 2 || Input.GetKey(KeyCode.RightArrow) || Input.GetKey("d")) {
-				transform.Rotate(new Vector3(0, rotation_speed, 0) * Time.deltaTime * m_Speed);
+				transform.Rotate(new Vector3(0, 2.5f, 0) * Time.deltaTime * m_Speed);
                 model.rotation = Quaternion.Lerp(model.rotation, to_model_right.rotation, lerpTime * Time.deltaTime);
-                rotation_speed += 0.015f;
-                rotation_speed = Math.Max(rotation_speed, 2.3f);
 			}
 			else if (Input.GetTouch (i).position.x < ScreenWidth / 2 || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a")) {
-				transform.Rotate(new Vector3(0, -rotation_speed, 0) * Time.deltaTime * m_Speed);
+				transform.Rotate(new Vector3(0, -2.5f, 0) * Time.deltaTime * m_Speed);
                 model.rotation = Quaternion.Lerp(model.rotation, to_model_left.rotation, lerpTime * Time.deltaTime);
-                rotation_speed += 0.015f;
-                rotation_speed = Math.Max(rotation_speed, 2.3f);
 			}
-            else{
-                // model.rotation = Quaternion.Lerp(model.rotation, to_origin.rotation, lerpTime * Time.deltaTime);
-                rotation_speed = 1.2f;
-            }
 			++i;
 		}
         
